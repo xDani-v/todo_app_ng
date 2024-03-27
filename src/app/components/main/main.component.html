@@ -1,19 +1,23 @@
 <div class="bg-blue-800 text-white text-center py-5">
-    <h1 class="text-3xl font-bold">Todo APP</h1>
-    <h2>Funciones avanzadas</h2>
+    <h1 class="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold">Todo APP</h1>
+    <h2 class="text-sm sm:text-base md:text-lg lg:text-xl">Funciones avanzadas</h2>
 </div>
 <form (ngSubmit)="createnewTask() ">
     <div class="p-10">
-        <div class="flex">
-            <div class="flex flex-col w-3/4">
-                <label for="myTextarea" class="mb-2 text-lg font-bold text-gray-700">Descripción:</label>
-                <textarea name="descripcion" id="myTextarea" rows="10"
-                    class="p-2 w-full h-48 border border-gray-300 rounded" [(ngModel)]="taskObj.descripcion"></textarea>
+        <div class="flex flex-col md:flex-row space-y-4 md:space-y-0 md:space-x-4">
+            <div class="flex-1">
+                <input type="text" name="descripcion" class="p-2 border border-gray-300 rounded w-full"
+                    [(ngModel)]="taskObj.descripcion" placeholder="Descripcion de la tarea">
             </div>
-            <div class="flex flex-col space-y-4 ml-4 w-30 pt-10">
-                <input type="date" name="fecha" class="p-2 border border-gray-300 rounded" [(ngModel)]="taskObj.fecha">
-                <input type="text" name="tags" class="p-2 border border-gray-300 rounded" [(ngModel)]="taskObj.tags"
-                    placeholder="Separa con ,">
+            <div class="flex-1">
+                <input type="date" name="fecha" class="p-2 border border-gray-300 rounded w-full"
+                    [(ngModel)]="taskObj.fecha">
+            </div>
+            <div class="flex-1">
+                <input type="text" name="tags" class="p-2 border border-gray-300 rounded w-full"
+                    [(ngModel)]="taskObj.tags" placeholder="Separa con ,">
+            </div>
+            <div>
                 <input type="submit" [value]="editingTaskIndex === null ? 'Agregar Tarea' : 'Actualizar'"
                     class="p-2 bg-blue-500 text-white rounded hover:bg-blue-700">
             </div>
@@ -21,43 +25,51 @@
     </div>
 </form>
 <div class="p-10">
-    <input [(ngModel)]="filterTag" placeholder="Filtrar por etiqueta" class="border p-2 rounded mr-2"
-        placeholder="Filtro por categorias">
-    <button (click)="filterTasks()" class="bg-blue-500 text-white px-4 py-2 rounded">Filtrar</button>
-    <!-- Resto del código... -->
+    <div class="flex space-x-4">
+        <input [(ngModel)]="filterTag" placeholder="Filtrar por etiqueta" class="border p-2 rounded mr-2 flex-grow"
+            placeholder="Filtro por categorias">
+        <button (click)="filterTasks()" class="bg-blue-500 text-white px-4 py-2 rounded">Filtrar</button>
+    </div>
 </div>
 
-<div class="p-10">
-    <table class="w-3/4 divide-y divide-blue-200 border border-gray-400">
+<div class="p-10 overflow-x-auto">
+    <table class="w-full divide-y divide-blue-200 border border-gray-400">
         <thead class="bg-blue-800">
             <tr>
-                <th class="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">Indice</th>
+                <th
+                    class="hidden md:table-cell px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">
+                    Indice</th>
                 <th class="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">Descripcion</th>
-                <th class="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">Fecha</th>
-                <th class="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">Categorias</th>
+                <th
+                    class="hidden md:table-cell px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">
+                    Fecha</th>
+                <th
+                    class="hidden md:table-cell px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">
+                    Categorias</th>
                 <th class="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">Acciones</th>
-                <th class="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">Completado</th>
+                <th
+                    class="hidden md:table-cell px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">
+                    Completado</th>
             </tr>
         </thead>
-        <tbody class=" divide-y  ">
+        <tbody class="divide-y">
             <tr *ngFor="let task of filteredTasks; index as i">
-                <td class="px-6 py-4 ">{{i + 1}}</td>
-                <td class="px-6 py-4 ">{{task.descripcion}}</td>
-                <td class="px-6 py-4 ">{{task.fecha}}</td>
-                <td class="px-6 py-4 ">
+                <td class="hidden md:table-cell px-6 py-4 whitespace-nowrap">{{i + 1}}</td>
+                <td class="px-6 py-4 whitespace-nowrap">{{task.descripcion}}</td>
+                <td class="hidden md:table-cell px-6 py-4 whitespace-nowrap">{{task.fecha}}</td>
+                <td class="hidden md:table-cell px-6 py-4 whitespace-nowrap">
                     <div *ngFor="let tag of task.tags.split(',')"
                         class="inline-block bg-blue-200 rounded-full px-3 py-1 text-sm font-semibold text-blue-700 mr-2 mb-2">
                         {{tag.trim()}}
                     </div>
                 </td>
-                <td class="px-6 py-4 ">
+                <td class="px-6 py-4 whitespace-nowrap">
                     <button (click)="editTask(i)"
                         class="bg-yellow-500 text-white px-4 py-2 rounded mr-2">Modificar</button>
                     <button (click)="deleteTask(i)" class="bg-red-500 text-white px-4 py-2 rounded">Eliminar</button>
                 </td>
-                <td class="px-6 py-4 ">
+                <td class="hidden md:table-cell px-6 py-4 whitespace-nowrap">
                     <input type="checkbox" class="px-4 py-2 rounded mr-2" [(ngModel)]="task.isCompleted">
-
                 </td>
             </tr>
         </tbody>
